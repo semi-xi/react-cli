@@ -13,11 +13,11 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: loadComponent(() => import('../view/home/index'))
+    component: loadComponent(() => import('../view/home'))
   },
   {
     path: '/list',
-    component: loadComponent(() => import('../view/List/index'))
+    component: loadComponent(() => import('../view/order/list'))
   }
 ]
 

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import orderReducer from './order.js'
+import orderReducer from './order'
 
 // reducer 合并
 

@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const config = require('./webpack.config.base')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 
 
 //性能相关配置
@@ -43,10 +43,9 @@ config.optimization = Object.assign({}, config.optimization, {
   },
 })
 
+config.mode = 'production'
 config.plugins = (config.plugins || []).concat([
-  new CleanWebpackPlugin(['dist'], {
-    root: path.resolve(__dirname, '../')
-  }),
+  new CleanWebpackPlugin(),
   new webpack.HashedModuleIdsPlugin()
 ])
 

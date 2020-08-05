@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const open = require('open')
 const config = require('./webpack.config.base')
 const webpackDevServer = require('webpack-dev-server')
 
@@ -16,12 +17,14 @@ const getIPAddress = function (){
   }
 }
 
-const port = process.env.PORT || 8000
+const PORT = process.env.PORT || 8000
+const HOST = getIPAddress() + ':' + PORT
 
 // 增加自动刷新以及热更新
 config.entry.main = (config.entry.main || []).concat([
   // 自动刷新
-  `webpack-dev-server/client/http://${getIPAddress()}:${port}`,
+  // `webpack-dev-server/client/http://${HOST}`,
+  `webpack-dev-server/client?http://localhost:${PORT}/`,
   // 配置热更新 还需要在plugins 增加webpack.HotModuleReplacementPlugin插件才可以用
   `webpack/hot/dev-server`
 ])
@@ -36,14 +39,15 @@ config.cache = true //缓存模块, 避免在未更改时重建它们。
 config.module.unsafeCache = true // 缓存已解决的依赖项, 避免重新解析它们。
 config.output.pathinfo = true
 
-config.optimization = Object.assign({}, config.optimization, {
-  providedExports:true, // 在可能的情况下确定每个模块的导出,被用于其他优化或代码生成。
-  splitChunks:true,  // 找到chunk中共享的模块,取出来生成单独的chunk
-  runtimeChunk:true, // 为webpack 运行时代码创建单独的chunk
-  noEmitOnErrors:true, // 编译错误时不写入到输出
-  namedModules:true, // 给模块有意义的名称代替ids
-  namedChunks:true // 给模chunk有意义的名称代替ids
-})
+// 优化这里会有问题
+// config.optimization = Object.assign({}, config.optimization, {
+//   providedExports:true, // 在可能的情况下确定每个模块的导出,被用于其他优化或代码生成。
+//   splitChunks:false,  // 找到chunk中共享的模块,取出来生成单独的chunk
+//   runtimeChunk:true, // 为webpack 运行时代码创建单独的chunk
+//   noEmitOnErrors:true, // 编译错误时不写入到输出
+//   namedModules:true, // 给模块有意义的名称代替ids
+//   namedChunks:true // 给模chunk有意义的名称代替ids
+// })
 
 
 config.mode = 'development'
@@ -67,4 +71,5 @@ server.listen(PORT, 'localhost', () => {
   console.log(`server started at localhost:${PORT}`)
 })
 
-module.exports = config
+
+open(`http://localhost:${PORT}`)

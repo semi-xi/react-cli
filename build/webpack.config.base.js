@@ -1,8 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
-const devMode = process.env === 'development'
+const Stylish = require("webpack-stylish");
+const devMode = process.env.NODE_ENV === 'development'
 module.exports = {
   entry: {
     main: [
@@ -11,7 +11,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, '..dist'), // output目录对应一个绝对路径
+    path: path.resolve(__dirname, '../dist'), // output目录对应一个绝对路径
     // webpack 提供一个非常有用的配置，该配置能帮助你为项目中的所有资源指定一个基础路径，它被称为公共路径(publicPath)。
     publicPath: '/',  // 打包后的静态资源访问路径 publicPath + 文件路径 如果是/ 则访问路径为 localhost:xxx/dist/xx/xx
     filename: '[name].js', // 输出文件名称 [id] [name] [hash]构建hash  [chunkhash]chunk hash [contenthash]内容hash，也可以是一个函数
@@ -30,15 +30,18 @@ module.exports = {
       {
         test: /\.(scss|css)$/,
         use:  [
-          devMode ? MiniCssExtractPlugin.loader : 'style-loader', 
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 
           'css-loader', 
-          'postcss-loader', 
+          {
+            loader: 'postcss-loader',
+            options: {}
+          },
           'sass-loader'] // 解析import 以及生成到style里面
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader",
         options: {
           presets: ["@babel/preset-env"]
         }
@@ -48,7 +51,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: '[name].[ext]?[hash]'
+          name: './static/img/[name].[ext]?[hash]'
         }
       }
     ]
@@ -64,18 +67,19 @@ module.exports = {
     extensions: ['.web.js', '.js', '.jsx', '.json']
   },
   // 优化
-  optimization: {
-    //parent chunk中解决了的chunk会被删除 生产环境默认true
-    removeAvailableModules:true,
-    //删除空的chunks  默认就是true
-    removeEmptyChunks:true,
-    //合并重复的chunk 默认就是true
-    mergeDuplicateChunks:true
-  },
+  // optimization: {
+  //   //parent chunk中解决了的chunk会被删除 生产环境默认true
+  //   removeAvailableModules:true,
+  //   //删除空的chunks  默认就是true
+  //   removeEmptyChunks:true,
+  //   //合并重复的chunk 默认就是true
+  //   mergeDuplicateChunks:true
+  // },
   plugins: [
     new HtmlWebpackPlugin({
-        template: './public/index.html',// 源html文件
-        filename: 'index.html', //打包后的文件名
+      title: "React App",
+        template: path.resolve(__dirname, "../public/index.html"),// 源html文件
+        // filename: 'index.html', //打包后的文件名
         hash: true, //是否加上hash，默认是 false
         minify: devMode
         ? false
@@ -95,6 +99,7 @@ module.exports = {
       filename: devMode ? "[name].css" : "style/[name].[hash].css",
       chunkFilename: devMode ? "[id].css" : "style/[id].[hash].css"
     }),
+    new Stylish()
   ]
   // mode: 'development' //  环境
 }
