@@ -34,7 +34,7 @@ config.plugins = (config.plugins || []).concat([
   new webpack.HotModuleReplacementPlugin()
 ])
 
-config.devtool = 'eval'
+config.devtool = 'cheap-module-eval-source-map'
 config.cache = true //缓存模块, 避免在未更改时重建它们。
 config.module.unsafeCache = true // 缓存已解决的依赖项, 避免重新解析它们。
 config.output.pathinfo = true

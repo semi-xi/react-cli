@@ -1,9 +1,6 @@
+import React, { Component } from "react";
 
-
-const OrderList = () => {
-  return (
-    <div>OrderList</div>
-  )
+function List () {
+  return (<div>List</div>)
 }
-
-export default OrderList
+export default List;

@@ -99,7 +99,7 @@ module.exports = {
       filename: devMode ? "[name].css" : "style/[name].[hash].css",
       chunkFilename: devMode ? "[id].css" : "style/[id].[hash].css"
     }),
-    new Stylish()
+    // new Stylish()
   ]
   // mode: 'development' //  环境
 }

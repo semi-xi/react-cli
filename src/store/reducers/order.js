@@ -1,12 +1,16 @@
 const initState = {
-  list: []
+  list: [
+    {
+     title: '1'
+    }
+  ]
 }
 function orderReducer (state = initState, action) {
   switch(action.type) {
     case 'ADD': {
       return {
         ...state,
-        list: [...state.list, action.item]
+        list: [...state.list, action.data]
       }
     }
     default: 

@@ -44,6 +44,7 @@ config.optimization = Object.assign({}, config.optimization, {
 })
 
 config.mode = 'production'
+config.devtool = 'cheap-module-source-map'
 config.plugins = (config.plugins || []).concat([
   new CleanWebpackPlugin(),
   new webpack.HashedModuleIdsPlugin()

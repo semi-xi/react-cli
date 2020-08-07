@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux'
-import orderReducer from './order'
+import { combineReducers } from "redux";
+import { connectRouter } from "connected-react-router";
 
-// reducer 合并
+import order from "./order";
 
-export default combineReducers({
-  order: orderReducer
-})
+export default history =>
+  combineReducers({
+    router: connectRouter(history),
+    order
+  });
